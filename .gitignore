@@ -1,0 +1,11 @@
+**/*.pyc
+.idea/
+**/*~
+gradle*
+libs/
+local.properties
+android.iml
+.gradle/
+android/assets/*
+tf_files/newImages
+tf_files/bottlenecks
