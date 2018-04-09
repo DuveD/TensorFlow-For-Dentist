@@ -23,7 +23,7 @@ La aplicación está basada en el código de la serie "TensorFlow for poets 2" d
 
 >`python3 -m scripts.label_image \`  
 >`--graph=tf_files/retrained_graph.pb  \`  
->`--image=tf_files/trainning/BranemarkMkIII+/28906.jpg`
+>`--image=tf_files/prueba/original.jpeg`
 
 #### Variables de entorno posiblemente necesarias para los scripts
 
