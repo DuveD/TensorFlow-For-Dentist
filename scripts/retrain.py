@@ -1,17 +1,3 @@
-# Copyright 2015 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
 r"""Simple transfer learning with Inception v3 or Mobilenet models.
 
 With support for TensorBoard.
@@ -117,7 +103,8 @@ from tensorflow.python.util import compat
 
 FLAGS = None
 
-ARCHITECTURE="mobilenet_0.50_224"
+#ARCHITECTURE="mobilenet_0.50_224"
+ARCHITECTURE="inception_v3"
 
 # These are all parameters that are tied to the particular model architecture
 # we're using for Inception v3. These include things like tensor names and their
@@ -971,7 +958,8 @@ def add_jpeg_decoding(input_width, input_height, input_depth, input_mean,
 def main(_):
   # Needed to make sure the logging output is visible.
   # See https://github.com/tensorflow/tensorflow/issues/3047
-  scripts.edit_photos.editPhotos()
+  if (FLAGS.transform_photos):
+    scripts.edit_photos.editPhotos()
 
   tf.logging.set_verbosity(tf.logging.INFO)
 
@@ -1202,13 +1190,13 @@ if __name__ == '__main__':
   parser.add_argument(
       '--testing_percentage',
       type=int,
-      default=10,
+      default=40,
       help='What percentage of images to use as a test set.'
   )
   parser.add_argument(
       '--validation_percentage',
       type=int,
-      default=10,
+      default=40,
       help='What percentage of images to use as a validation set.'
   )
   parser.add_argument(
@@ -1328,5 +1316,14 @@ if __name__ == '__main__':
       takes 128x128 images. See https://research.googleblog.com/2017/06/mobilenets-open-source-models-for.html
       for more information on Mobilenet.\
       """)
+  parser.add_argument(
+      '--transform_photos',
+      default=False,
+      help="""\
+      Transform the data image set wiht rotations into tf_files/originalImages.\
+      """)
   FLAGS, unparsed = parser.parse_known_args()
+  if ( (FLAGS.testing_percentage + FLAGS.validation_percentage) >= 100):
+    print('The sum of testing_percentage and validation_percentage can not be greater or equal than 100.')
+    exit()
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)

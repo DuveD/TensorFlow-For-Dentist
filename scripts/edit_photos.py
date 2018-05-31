@@ -34,10 +34,7 @@ def editPhotos():
 
         print("Checking for images into "+newImagePath+"/"+dirname+" original folder...")
         for filename in os.listdir(originalImagesPath+"/"+dirname):
-
-            print("Getting "+originalImagesPath+"/"+dirname+"/"+filename+" image")
             image = Image.open(originalImagesPath+"/"+dirname+"/"+filename)
-
             transformAndSafe(dirname, filename, image)
 
 def transformAndSafe(dirname, filename, image):
@@ -45,5 +42,6 @@ def transformAndSafe(dirname, filename, image):
     degrees = 0
     while (degrees < 360):
         newImage = image.rotate(degrees, expand=True)
+        print("Saving "+newImagePath+"/"+dirname+"/"+filename+str(degrees)+".jpeg")
         newImage.save(newImagePath+"/"+dirname+"/"+filename+str(degrees)+".jpeg")
         degrees = degrees + 30
