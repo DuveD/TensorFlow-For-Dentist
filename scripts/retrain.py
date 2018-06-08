@@ -113,7 +113,7 @@ ARCHITECTURE="inception_v3"
 MAX_NUM_IMAGES_PER_CLASS = 2 ** 27 - 1  # ~134M
 
 
-def create_image_lists(image_dir, testing_percentage, validation_percentage):
+def create_image_lists(original_image_dir, image_dir, testing_percentage, validation_percentage):
   """Builds a list of training images from the file system.
 
   Analyzes the sub folders in the image directory, splits them into stable
@@ -130,23 +130,24 @@ def create_image_lists(image_dir, testing_percentage, validation_percentage):
     into training, testing, and validation sets within each label.
   """
   if not gfile.Exists(image_dir):
-    tf.logging.error("Image directory '" + image_dir + "' not found.")
-    return None
+      tf.logging.info("Image directory '" + image_dir + "' not found... creating.")
+      scripts.edit_photos.editPhotos()
+
   result = collections.OrderedDict()
   sub_dirs = [
-    os.path.join(image_dir,item)
-    for item in gfile.ListDirectory(image_dir)]
+    os.path.join(original_image_dir,item)
+    for item in gfile.ListDirectory(original_image_dir)]
   sub_dirs = sorted(item for item in sub_dirs
                     if gfile.IsDirectory(item))
   for sub_dir in sub_dirs:
     extensions = ['jpg', 'jpeg', 'JPG', 'JPEG']
     file_list = []
     dir_name = os.path.basename(sub_dir)
-    if dir_name == image_dir:
+    if dir_name == original_image_dir:
       continue
     tf.logging.info("Looking for images in '" + dir_name + "'")
     for extension in extensions:
-      file_glob = os.path.join(image_dir, dir_name, '*.' + extension)
+      file_glob = os.path.join(original_image_dir, dir_name, '*.' + extension)
       file_list.extend(gfile.Glob(file_glob))
     if not file_list:
       tf.logging.warning('No files found')
@@ -177,18 +178,30 @@ def create_image_lists(image_dir, testing_percentage, validation_percentage):
       # To do that, we need a stable way of deciding based on just the file name
       # itself, so we do a hash of that and then use that to generate a
       # probability value that we use to assign it.
-      
-      # TODO: Cambiar la manera en la que elige las fotos
+
       hash_name_hashed = hashlib.sha1(compat.as_bytes(hash_name)).hexdigest()
       percentage_hash = ((int(hash_name_hashed, 16) %
                           (MAX_NUM_IMAGES_PER_CLASS + 1)) *
                          (100.0 / MAX_NUM_IMAGES_PER_CLASS))
       if percentage_hash < validation_percentage:
         validation_images.append(base_name)
+        degrees = 30
+        while (degrees < 360):
+            validation_images.append(base_name+str(degrees)+".jpeg")
+            degrees = degrees + 30
       elif percentage_hash < (testing_percentage + validation_percentage):
         testing_images.append(base_name)
+        degrees = 30
+        while (degrees < 360):
+            testing_images.append(base_name+str(degrees)+".jpeg")
+            degrees = degrees + 30
       else:
         training_images.append(base_name)
+        degrees = 30
+        while (degrees < 360):
+            training_images.append(base_name+str(degrees)+".jpeg")
+            degrees = degrees + 30
+
     result[label_name] = {
         'dir': dir_name,
         'training': training_images,
@@ -980,7 +993,7 @@ def main(_):
       create_model_graph(model_info))
 
   # Look at the folder structure, and create lists of all the images.
-  image_lists = create_image_lists(FLAGS.image_dir, FLAGS.testing_percentage,
+  image_lists = create_image_lists(FLAGS.original_image_dir, FLAGS.image_dir, FLAGS.testing_percentage,
                                    FLAGS.validation_percentage)
   class_count = len(image_lists.keys())
   if class_count == 0:
@@ -1138,6 +1151,12 @@ def main(_):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
+  parser.add_argument(
+      '--original_image_dir',
+      type=str,
+      default='tf_files/originalImages',
+      help='Path to folders of original labeled images.'
+  )
   parser.add_argument(
       '--image_dir',
       type=str,

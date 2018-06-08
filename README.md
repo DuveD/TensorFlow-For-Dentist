@@ -22,7 +22,7 @@ La aplicación está basada en el código de la serie "TensorFlow for poets 2" d
 #### Comando para probar a identificar un imagen
 
 >`python3 -m scripts.label_image \`  
->`--graph=tf_files/retrained_graph.pb  \`  
+>`--graph=tf_files/retrained_graph.pb \`  
 >`--image=tf_files/prueba/original.jpeg`
 
 ## Comando para ejecutar TensorBoard: Una manera visual de consultar el entrenamiento de la red neuronal
