@@ -18,7 +18,6 @@ def editPhotos():
         for dirname in os.listdir(newImagePath):
             for filename in os.listdir(newImagePath+"/"+dirname):
                 os.remove(newImagePath+"/"+dirname+"/"+filename)
-            os.remove(newImagePath+"/"+dirname)
         print("...deleted")
 
     print("Checking for "+newImagePath+" folder...")

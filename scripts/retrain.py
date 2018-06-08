@@ -1199,14 +1199,16 @@ if __name__ == '__main__':
   parser.add_argument(
       '--how_many_training_steps',
       type=int,
-      default=1000,
+      default=500,
       help='How many training steps to run before ending.'
+      # 500 medium training. Good Accuracy.
   )
   parser.add_argument(
       '--learning_rate',
       type=float,
-      default=0.1,
+      default=0.01,
       help='How large a learning rate to use when training.'
+      # Per cada iteració. "cuan canvia el graph del entrenament" el pes que té a cada pas de l'entrenament
   )
   parser.add_argument(
       '--testing_percentage',
@@ -1229,8 +1231,13 @@ if __name__ == '__main__':
   parser.add_argument(
       '--train_batch_size',
       type=int,
-      default=1000,
-      help='How many images to train on at a time.'
+      default=-1,
+      help="""\
+      How many images to train on at a time.
+      A value of -1 causes the entire validation set to be used, which leads to
+      more stable results across training iterations, but may be slower on large
+      training sets.\
+      """
   )
   parser.add_argument(
       '--test_batch_size',
@@ -1246,7 +1253,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--validation_batch_size',
       type=int,
-      default=100,
+      default=-1,
       help="""\
       How many images to use in an evaluation batch. This validation set is
       used much more often than the test set, and is an early indicator of how
@@ -1263,6 +1270,7 @@ if __name__ == '__main__':
       Whether to print out a list of all misclassified test images.\
       """,
       action='store_true'
+      # Printa en algun lloc les imatges que han fallat
   )
   parser.add_argument(
       '--model_dir',
@@ -1295,6 +1303,7 @@ if __name__ == '__main__':
       Whether to randomly flip half of the training images horizontally.\
       """,
       action='store_true'
+      # fa un mirall
   )
   parser.add_argument(
       '--random_crop',
@@ -1313,6 +1322,7 @@ if __name__ == '__main__':
       A percentage determining how much to randomly scale up the size of the
       training images by.\
       """
+      # interesant
   )
   parser.add_argument(
       '--random_brightness',
