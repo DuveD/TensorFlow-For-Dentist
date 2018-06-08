@@ -1211,13 +1211,13 @@ if __name__ == '__main__':
   parser.add_argument(
       '--testing_percentage',
       type=int,
-      default=40,
+      default=20,
       help='What percentage of images to use as a test set.'
   )
   parser.add_argument(
       '--validation_percentage',
       type=int,
-      default=40,
+      default=20,
       help='What percentage of images to use as a validation set.'
   )
   parser.add_argument(
