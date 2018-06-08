@@ -177,6 +177,8 @@ def create_image_lists(image_dir, testing_percentage, validation_percentage):
       # To do that, we need a stable way of deciding based on just the file name
       # itself, so we do a hash of that and then use that to generate a
       # probability value that we use to assign it.
+      
+      # TODO: Cambiar la manera en la que elige las fotos
       hash_name_hashed = hashlib.sha1(compat.as_bytes(hash_name)).hexdigest()
       percentage_hash = ((int(hash_name_hashed, 16) %
                           (MAX_NUM_IMAGES_PER_CLASS + 1)) *
@@ -1178,13 +1180,13 @@ if __name__ == '__main__':
   parser.add_argument(
       '--how_many_training_steps',
       type=int,
-      default=5000,
+      default=1000,
       help='How many training steps to run before ending.'
   )
   parser.add_argument(
       '--learning_rate',
       type=float,
-      default=0.01,
+      default=0.1,
       help='How large a learning rate to use when training.'
   )
   parser.add_argument(
@@ -1202,13 +1204,13 @@ if __name__ == '__main__':
   parser.add_argument(
       '--eval_step_interval',
       type=int,
-      default=10,
+      default=1,
       help='How often to evaluate the training results.'
   )
   parser.add_argument(
       '--train_batch_size',
       type=int,
-      default=100,
+      default=1000,
       help='How many images to train on at a time.'
   )
   parser.add_argument(

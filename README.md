@@ -25,19 +25,22 @@ La aplicación está basada en el código de la serie "TensorFlow for poets 2" d
 >`--graph=tf_files/retrained_graph.pb  \`  
 >`--image=tf_files/prueba/original.jpeg`
 
-#### Variables de entorno posiblemente necesarias para los scripts
+## Comando para ejecutar TensorBoard: Una manera visual de consultar el entrenamiento de la red neuronal
 
->`IMAGE_SIZE=224`  
->`ARCHITECTURE="mobilenet_0.50_${IMAGE_SIZE}"`
+Ejecutando el siguiente comando antes del entrenamiento y accediendo al enlace que se genera, podremos ver la evolución del a red neuronal de TensorFlow así como la **Training accuracy**, la **Validation accuracy** y el **Cross entropy** del entrenamiento.
+
+>`tensorboard --logdir tf_files/training_summaries &`
 
 ## Desarollado con
 
-* [Python 3.5.2](https://www.python.org/) - Lenguaje de la aplicación
+* [Python](https://www.python.org/) - Lenguaje de la aplicación
 
-* [Pip 9.0.3](https://pip.pypa.io/) - Adminsitrador de paquetes de Python
+  > [Pillow](http://pillow.readthedocs.io) - Python Imaging Library
 
 * [TensorFlow](https://www.tensorflow.org/) - Framework de machine learning para el aprendizaje automático e identificación de patrones
 
 ## Enlaces
+
+* [Pip](https://pip.pypa.io/) - Adminsitrador de paquetes de Python
 
 * [TensorFlow for poets 2](https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/) - Image Classifier with TensorFlow for Poets
